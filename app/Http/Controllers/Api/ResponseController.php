@@ -12,15 +12,14 @@ class ResponseController extends Controller
 {
     public function sendResponse($response)
     {
+        $response['success'] = true;
         return response()->json($response, 200);
     }
 
 
-    public function sendError($error, $code = 404)
+    public function sendError($error)
     {
-    	$response = [
-            'error' => $error,
-        ];
-        return response()->json($response, $code);
+        return response()->json([
+            'message' => 'Page Not Found. If error persists, contact info@website.com'],401);
     }
 }

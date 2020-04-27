@@ -23,7 +23,8 @@ class AuthController extends ResponseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError($validator->errors());       
+            $error['msg'] = $validator->errors()->first();
+            return $this->sendError($error);       
         }
 
         $input = $request->all();
@@ -32,12 +33,12 @@ class AuthController extends ResponseController
         if($user){
             $user->sendEmailVerificationNotification();
             $success['token'] =  $user->createToken('token')->accessToken;
-            $success['message'] = "Registration successfull..";
+            $success['msg'] = "Registration successfull..";
             return $this->sendResponse($success);
         }
         else{
-            $error = "Sorry! Registration is not successfull.";
-            return $this->sendError($error, 401); 
+            $error['msg'] = "Sorry! Registration is not successfull.";
+            return $this->sendError($error); 
         }
         
     }
@@ -51,13 +52,14 @@ class AuthController extends ResponseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError($validator->errors());       
+            $error['msg'] = $validator->errors()->first();
+            return $this->sendError($error);          
         }
 
         $credentials = request(['email', 'password']);
         if(!Auth::attempt($credentials)){
-            $error = "Unauthorized";
-            return $this->sendError($error, 401);
+            $error['msg'] = "Account not found";
+            return $this->sendError($error);
         }
         $user = $request->user();
         $success['token'] =  $user->createToken('token')->accessToken;
@@ -70,11 +72,11 @@ class AuthController extends ResponseController
         
         $isUser = $request->user()->token()->revoke();
         if($isUser){
-            $success['message'] = "Successfully logged out.";
+            $success['msg'] = "Successfully logged out.";
             return $this->sendResponse($success);
         }
         else{
-            $error = "Something went wrong.";
+            $error['msg'] = "Something went wrong.";
             return $this->sendResponse($error);
         }
             

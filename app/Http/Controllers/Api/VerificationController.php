@@ -7,8 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Auth\Access\AuthorizationException;
+use App\Http\Controllers\Api\ResponseController as ResponseController;
 
-class VerificationController extends Controller
+class VerificationController extends ResponseController
 {
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +29,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    //protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -52,13 +53,15 @@ class VerificationController extends Controller
     {
         if ($request->user()->hasVerifiedEmail()) {
 
-            return response(['message'=>'Already verified']);
+            $success['message'] = "Already verified";
+            return $this->sendResponse($success);
         }
 
         $request->user()->sendEmailVerificationNotification();
 
         if ($request->wantsJson()) {
-            return response(['message' => 'Email Sent']);
+            $success['message'] = "Email Sent";
+            return $this->sendResponse($success);
         }
 
         return back()->with('resent', true);
@@ -82,7 +85,8 @@ class VerificationController extends Controller
 
         if ($request->user()->hasVerifiedEmail()) {
 
-            return response(['message'=>'Already verified']);
+            $success['message'] = "Already verified";
+            return $this->sendResponse($success);
 
             // return redirect($this->redirectPath());
         }
@@ -91,7 +95,8 @@ class VerificationController extends Controller
             event(new Verified($request->user()));
         }
 
-        return response(['message'=>'Successfully verified']);
+        $success['message'] = "Successfully verified";
+        return $this->sendResponse($success);
 
     }
 

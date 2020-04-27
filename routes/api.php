@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 */
 Route::group(['middleware' => ['guest:api']], function () {
     Route::post('login', 'Api\AuthController@login');
-    Route::post('signup', 'Api\AuthController@signup');
+    Route::post('register', 'Api\AuthController@signup');
     Route::get('verify-email/{id}/{hash}', 'Api\VerificationController@verify')->name('verification.verify');
 });
 Route::group(['middleware' => 'auth:api'], function() {

@@ -11,6 +11,13 @@
 |
 */
 
+Route::any('/{all}', function () {
+    return view('welcome');
+})
+    ->where(['all' => '.*']);
+/*
 Route::get('/', function () {
     return view('welcome');
-});
+});*/
+
+Route::get('/chats', 'ChatsController@index');

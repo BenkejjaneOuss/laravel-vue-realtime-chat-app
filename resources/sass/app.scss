@@ -6,3 +6,15 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.navbar {
+    background-color: #f8fafc;
+}
+
+.form-control-feedback {
+    color: red;
+}
+
+.form-control-danger {
+    border-color: red;
+}
